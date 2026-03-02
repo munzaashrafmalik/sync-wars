@@ -1,6 +1,7 @@
 # 🎮 Sync Wars - Multi-Game Arcade
 # sync_wars URL: 
 https://sync-wars-munza.netlify.app/
+
 A professional multi-game arcade application built with pure HTML, CSS, and JavaScript. Play 6 classic games in one beautiful app!
 
 ## 🎯 Games Included
