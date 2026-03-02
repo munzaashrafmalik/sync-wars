@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync Wars - Multi-Game Arcade</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="arcade-container">
+        <!-- Main Menu -->
+        <div class="main-menu" id="mainMenu">
+            <header class="arcade-header">
+                <div class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <h1>Sync Wars</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="leaderboard-btn" id="leaderboardBtn">
+                        <i class="fas fa-trophy"></i>
+                        Leaderboard
+                    </button>
+                </div>
+            </header>
+
+            <div class="welcome-section">
+                <h2>Welcome to Sync Wars! 🎮</h2>
+                <p>Choose your game and start playing!</p>
+            </div>
+
+            <!-- Game Selection Grid -->
+            <div class="games-grid">
+                <div class="game-card" data-game="ludo">
+                    <div class="game-icon ludo-icon">
+                        <i class="fas fa-dice"></i>
+                    </div>
+                    <h3>Ludo</h3>
+                    <p>Classic board game for 4 players!</p>
+                    <div class="game-stats">
+                        <span class="high-score">Wins: <strong id="ludoHighScore">0</strong></span>
+                    </div>
+                    <button class="play-btn">Play Now</button>
+                </div>
+
+                <div class="game-card" data-game="tictactoe">
+                    <div class="game-icon tictactoe-icon">
+                        <i class="fas fa-circle-notch"></i>
+                    </div>
+                    <h3>Tic Tac Toe</h3>
+                    <p>Classic X and O game!</p>
+                    <div class="game-stats">
+                        <span class="high-score">Wins: <strong id="tictactoeHighScore">0</strong></span>
+                    </div>
+                    <button class="play-btn">Play Now</button>
+                </div>
+
+                <div class="game-card" data-game="tetris">
+                    <div class="game-icon tetris-icon">
+                        <i class="fas fa-shapes"></i>
+                    </div>
+                    <h3>Tetris</h3>
+                    <p>Stack blocks and clear lines!</p>
+                    <div class="game-stats">
+                        <span class="high-score">High: <strong id="tetrisHighScore">0</strong></span>
+                    </div>
+                    <button class="play-btn">Play Now</button>
+                </div>
+
+                <div class="game-card" data-game="memory">
+                    <div class="game-icon memory-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Memory</h3>
+                    <p>Match cards and test your memory!</p>
+                    <div class="game-stats">
+                        <span class="high-score">High: <strong id="memoryHighScore">0</strong></span>
+                    </div>
+                    <button class="play-btn">Play Now</button>
+                </div>
+
+                <div class="game-card" data-game="2048">
+                    <div class="game-icon game2048-icon">
+                        <i class="fas fa-th"></i>
+                    </div>
+                    <h3>2048</h3>
+                    <p>Merge tiles to reach 2048!</p>
+                    <div class="game-stats">
+                        <span class="high-score">High: <strong id="game2048HighScore">0</strong></span>
+                    </div>
+                    <button class="play-btn">Play Now</button>
+                </div>
+
+                <div class="game-card" data-game="brick">
+                    <div class="game-icon brick-icon">
+                        <i class="fas fa-table-tennis"></i>
+                    </div>
+                    <h3>Brick Breaker</h3>
+                    <p>Break all bricks with the ball!</p>
+                    <div class="game-stats">
+                        <span class="high-score">High: <strong id="brickHighScore">0</strong></span>
+                    </div>
+                    <button class="play-btn">Play Now</button>
+                </div>
+            </div>
+
+            <footer class="arcade-footer">
+                <p>🎮 Sync Wars - Play, Compete, Win! 🏆</p>
+            </footer>
+        </div>
+
+        <!-- Game Container -->
+        <div class="game-wrapper" id="gameWrapper" style="display: none;">
+            <header class="game-header">
+                <button class="back-btn" id="backBtn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Menu
+                </button>
+                <div class="game-info">
+                    <h2 id="currentGameTitle">Game Title</h2>
+                    <div class="score-display">
+                        <span class="score-label">Score:</span>
+                        <strong id="currentScore">0</strong>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="pauseBtn" title="Pause">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="control-btn" id="restartBtn" title="Restart">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button class="control-btn sound-toggle" id="soundToggle" title="Sound">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Game Canvas/Container -->
+            <div class="game-area">
+                <!-- Snake Game -->
+                <div class="game-canvas" id="snakeGame" style="display: none;">
+                    <canvas id="snakeCanvas"></canvas>
+                    <div class="game-overlay" id="snakeOverlay">
+                        <div class="overlay-content">
+                            <h3>Snake Game</h3>
+                            <p>Use Arrow Keys or WASD to move</p>
+                            <button class="start-game-btn" id="startSnake">Start Game</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tetris Game -->
+                <div class="game-canvas" id="tetrisGame" style="display: none;">
+                    <div class="tetris-container">
+                        <canvas id="tetrisCanvas"></canvas>
+                        <div class="tetris-sidebar">
+                            <div class="tetris-panel">
+                                <h4>Next</h4>
+                                <canvas id="tetrisNext"></canvas>
+                            </div>
+                            <div class="tetris-panel">
+                                <h4>Level</h4>
+                                <span id="tetrisLevel">1</span>
+                            </div>
+                            <div class="tetris-panel">
+                                <h4>Lines</h4>
+                                <span id="tetrisLines">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-overlay" id="tetrisOverlay">
+                        <div class="overlay-content">
+                            <h3>Tetris</h3>
+                            <p>Arrow Keys to move, Up to rotate</p>
+                            <button class="start-game-btn" id="startTetris">Start Game</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Memory Game -->
+                <div class="game-canvas" id="memoryGame" style="display: none;">
+                    <div class="memory-header">
+                        <div class="memory-stat">
+                            <span>Moves:</span>
+                            <strong id="memoryMoves">0</strong>
+                        </div>
+                        <div class="memory-stat">
+                            <span>Time:</span>
+                            <strong id="memoryTime">0:00</strong>
+                        </div>
+                        <div class="memory-stat">
+                            <span>Pairs:</span>
+                            <strong id="memoryPairs">0/8</strong>
+                        </div>
+                    </div>
+                    <div class="memory-grid" id="memoryGrid">
+                        <!-- Cards will be generated here -->
+                    </div>
+                    <div class="game-overlay" id="memoryOverlay">
+                        <div class="overlay-content">
+                            <h3>Memory Game</h3>
+                            <p>Match all pairs in minimum moves!</p>
+                            <button class="start-game-btn" id="startMemory">Start Game</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2048 Game -->
+                <div class="game-canvas" id="game2048" style="display: none;">
+                    <div class="game2048-container">
+                        <div class="game2048-header">
+                            <div class="score-box">
+                                <span>Score</span>
+                                <strong id="game2048Score">0</strong>
+                            </div>
+                            <div class="score-box">
+                                <span>Best</span>
+                                <strong id="game2048Best">0</strong>
+                            </div>
+                        </div>
+                        <div class="game2048-grid" id="game2048Grid">
+                            <!-- Grid will be generated here -->
+                        </div>
+                    </div>
+                    <div class="game-overlay" id="game2048Overlay">
+                        <div class="overlay-content">
+                            <h3>2048</h3>
+                            <p>Use Arrow Keys to merge tiles!</p>
+                            <button class="start-game-btn" id="start2048">Start Game</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brick Breaker Game -->
+                <div class="game-canvas" id="brickGame" style="display: none;">
+                    <canvas id="brickCanvas"></canvas>
+                    <div class="game-overlay" id="brickOverlay">
+                        <div class="overlay-content">
+                            <h3>Brick Breaker</h3>
+                            <p>Mouse or Arrow Keys to move paddle</p>
+                            <button class="start-game-btn" id="startBrick">Start Game</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ludo Game -->
+                <div class="game-canvas" id="ludoGame" style="display: none;">
+                    <div class="ludo-container">
+                        <div class="ludo-board" id="ludoBoard">
+                            <!-- Home Bases -->
+                            <div class="ludo-home red">
+                                <div class="home-inner" id="redHome">
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                </div>
+                            </div>
+                            <div class="ludo-home green">
+                                <div class="home-inner" id="greenHome">
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                </div>
+                            </div>
+                            <div class="ludo-home blue">
+                                <div class="home-inner" id="blueHome">
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                </div>
+                            </div>
+                            <div class="ludo-home yellow">
+                                <div class="home-inner" id="yellowHome">
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                    <div class="home-position"></div>
+                                </div>
+                            </div>
+                            <!-- Center -->
+                            <div class="ludo-center">🏆</div>
+                            <!-- Path cells will be added by JavaScript -->
+                        </div>
+                        <div class="ludo-controls">
+                            <div class="dice-section">
+                                <button class="dice-btn" id="rollDice">
+                                    <i class="fas fa-dice"></i> Roll Dice
+                                </button>
+                                <div class="dice-display" id="diceValue">⚀</div>
+                            </div>
+                            <div class="turn-indicator" id="turnIndicator">
+                                <span>Player's Turn</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-overlay" id="ludoOverlay">
+                        <div class="overlay-content">
+                            <h3>Ludo</h3>
+                            <p>Roll dice and race your tokens home!</p>
+                            <button class="start-game-btn" id="startLudo">Start Game</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tic Tac Toe Game -->
+                <div class="game-canvas" id="tictactoeGame" style="display: none;">
+                    <div class="tictactoe-container">
+                        <div class="tictactoe-header">
+                            <div class="player-indicator" id="playerIndicator">
+                                <span>Player X's Turn</span>
+                            </div>
+                        </div>
+                        <div class="tictactoe-board" id="tictactoeBoard">
+                            <div class="ttt-cell" data-index="0"></div>
+                            <div class="ttt-cell" data-index="1"></div>
+                            <div class="ttt-cell" data-index="2"></div>
+                            <div class="ttt-cell" data-index="3"></div>
+                            <div class="ttt-cell" data-index="4"></div>
+                            <div class="ttt-cell" data-index="5"></div>
+                            <div class="ttt-cell" data-index="6"></div>
+                            <div class="ttt-cell" data-index="7"></div>
+                            <div class="ttt-cell" data-index="8"></div>
+                        </div>
+                        <div class="tictactoe-result" id="tictactoeResult"></div>
+                    </div>
+                    <div class="game-overlay" id="tictactoeOverlay">
+                        <div class="overlay-content">
+                            <h3>Tic Tac Toe</h3>
+                            <p>X and O - Classic battle!</p>
+                            <button class="start-game-btn" id="startTicTacToe">Start Game</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Controls -->
+            <div class="mobile-controls" id="mobileControls">
+                <div class="dpad" id="dpad">
+                    <button class="dpad-btn up" data-dir="up"><i class="fas fa-chevron-up"></i></button>
+                    <button class="dpad-btn left" data-dir="left"><i class="fas fa-chevron-left"></i></button>
+                    <button class="dpad-btn right" data-dir="right"><i class="fas fa-chevron-right"></i></button>
+                    <button class="dpad-btn down" data-dir="down"><i class="fas fa-chevron-down"></i></button>
+                </div>
+                <button class="action-btn" id="actionBtn">
+                    <i class="fas fa-circle"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Leaderboard Modal -->
+        <div class="modal" id="leaderboardModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content leaderboard-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-trophy"></i> Leaderboard</h3>
+                    <button class="modal-close" id="leaderboardClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="leaderboard-body">
+                    <div class="leaderboard-tabs">
+                        <button class="tab-btn active" data-game="all">All Games</button>
+                        <button class="tab-btn" data-game="ludo">Ludo</button>
+                        <button class="tab-btn" data-game="tictactoe">Tic Tac Toe</button>
+                        <button class="tab-btn" data-game="tetris">Tetris</button>
+                        <button class="tab-btn" data-game="memory">Memory</button>
+                        <button class="tab-btn" data-game="2048">2048</button>
+                        <button class="tab-btn" data-game="brick">Brick</button>
+                    </div>
+                    <div class="leaderboard-list" id="leaderboardList">
+                        <!-- Leaderboard entries will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div class="modal" id="gameOverModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content gameover-content">
+                <div class="gameover-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h2 id="gameOverTitle">Game Over!</h2>
+                <div class="final-score">
+                    <span>Final Score:</span>
+                    <strong id="finalScore">0</strong>
+                </div>
+                <div class="highscore-check" id="highscoreCheck" style="display: none;">
+                    <i class="fas fa-star"></i>
+                    <span>New High Score!</span>
+                </div>
+                <div class="gameover-actions">
+                    <button class="btn-primary" id="playAgainBtn">
+                        <i class="fas fa-redo"></i> Play Again
+                    </button>
+                    <button class="btn-secondary" id="menuBtn">
+                        <i class="fas fa-home"></i> Main Menu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
