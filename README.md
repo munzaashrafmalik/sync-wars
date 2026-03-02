@@ -112,35 +112,7 @@ Break all bricks using a ball and paddle. Classic arcade action!
 - Touch controls support
 - Adaptive layout
 
-## 🚀 Quick Start
-
-### Step 1: Download/Clone
-```bash
-# Clone from GitHub (if available)
-git clone https://github.com/YOUR_USERNAME/sync-wars.git
-
-# Or download as ZIP and extract
-```
-
-### Step 2: Open
-Simply double-click `index.html` in your browser!
-
-### Step 3: Play!
-1. Select a game from the main menu
-2. Click "Start Game"
-3. Follow game-specific controls
-4. Enjoy!
-
-## 📁 File Structure
-
-```
-sync-wars/
-├── index.html          # Main HTML file
-├── style.css           # Professional styling with themes
-├── script.js           # All 6 games logic
-├── README.md           # This file
-└── .gitignore          # Git ignore file (optional)
-```
+---
 
 ## 🎮 How to Play Each Game
 
